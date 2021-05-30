@@ -1,0 +1,43 @@
+01 PROBLEM
+==========
+
+(PHP and HTML) You need to create a PHP script for the world's best news agency! :-)
+So there is a variable called $news_item_text containing the full text of news. The news URL is in the $news_item_url variable. Your script should process the news text using the following algorithm and print the result out.
+
+Algorithm
+---------
+1) Get the first 180 charactes of variable $news_item_text;
+2) Concatenate an ellipsis to it;
+3) Wrap the last two chars and the ellipsis as a hyperlink.
+
+What can go wrong? What are your thoughts about the problem?
+
+Please send us a link to the repository containing the script and your comments.
+
+02 COMMENTS
+===============
+Actually there are three major sources of problems:
+
+1) 'bad' input for the algorithm
+2) unsafe HTML for a browser
+3) unsafe data for the PHP engine
+
+02.1 THE PHP engine
+-------------------
+As PHP is the interpeter by nature it allows us to execute code dynamically by functions like exec() and system(). It is a big vulnerability, so we should disable the one in php.ini:
+disable_functions = system, exec, passthru, shell_exec, proc_open.
+Unless it is not the case for our problem let's do it anyway!
+
+02.2 JavaScript in HTML
+-----------------------
+Browsers are able to interpret the ECMAScript language during HTML parsing. Unless there should NO any JS instructions in the news text let's keep it mind. We should escape characters like <, >, and so on using the htmlentities() function. (AFAIK it is a PHP best practice and follows the OWASP guidelines).
+
+03.3 Different types of inputs for the algo
+-------------------------------------------
+The input data can be really different but the algorithm should work more or less OK in all cases.
+
+1) Codepage. The PHP default codepage is Unicode. Consequently we should cansider Chinise, Arabic, Hebrew as our input ( Because we create the world's best news agency! :-) )
+
+2) The length of a string. It could be less than 180 characters of even 0! (Quite frankly these are DBMS triggers' checks, but we trust no one. Even our own database).
+
+3) The string could contain no spaces (A long landmark name for example).

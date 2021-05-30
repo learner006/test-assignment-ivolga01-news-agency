@@ -4,17 +4,25 @@
    $news_item_url
    $news_item_text
 */
-   # require_once('ivolga_text_constants_chinese.php');
-   require_once('ivolga_text_constants_rus.php');
-   # require_once('ivolga_text_constants_eng.php');
+   $arr_files = Array(
+      'ivolga_text_constants_rus.php',
+      'ivolga_text_constants_eng.php',
+      'ivolga_text_constants_chinese.php',
+      'ivolga_text_constants_empty_str.php',
+      'ivolga_text_constants_short_str.php'
+   );
+
+   require_once($arr_files[4]);
 
    $MAX_HEADLINE_LEN = 180;
    $news_item_headline = substr($news_item_text, 0, $MAX_HEADLINE_LEN-1);
 
-   preg_match('/\S+\s+\S+\s*$/', $news_item_headline, $matches, PREG_OFFSET_CAPTURE);
+   $split_idx = 0;
+   if (preg_match('/\S+\s+\S+\s*$/', $news_item_headline, $matches, PREG_OFFSET_CAPTURE))
+      $split_idx = $matches[0][1];
 
-   $news_item_headline_text_part = substr($news_item_headline, 0, $matches[0][1]);
-   $news_item_headline_anchor_part = substr($news_item_headline, $matches[0][1]);
+   $news_item_headline_text_part = substr($news_item_headline, 0, $split_idx);
+   $news_item_headline_anchor_part = substr($news_item_headline,  $split_idx);
 
    
    # do not trust anyone! :-)
